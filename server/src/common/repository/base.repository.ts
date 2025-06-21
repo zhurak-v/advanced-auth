@@ -36,7 +36,7 @@ export abstract class BaseRepository<
     throw error;
   }
 
-  public async findById(
+  public async findByUniqueKeys(
     where: ExtractWhere<TFindUniqueArgs>,
     args?: Omit<TFindUniqueArgs, 'where'>
   ): Promise<TEntity | null> {
@@ -50,7 +50,7 @@ export abstract class BaseRepository<
     }
   }
 
-  public async findByIdOrThrow(
+  public async findByUniqueKeysOrThrow(
     where: ExtractWhere<TFindUniqueArgs>,
     args?: Omit<TFindUniqueArgs, 'where'>
   ): Promise<TEntity> {
@@ -64,7 +64,7 @@ export abstract class BaseRepository<
         this.handleError(error);
       }
     }
-    const entity = await this.findById(where, args);
+    const entity = await this.findByUniqueKeys(where, args);
     if (!entity) {
       throw new NotFoundException(`Entity not found by: ${JSON.stringify(where)}`);
     }

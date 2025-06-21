@@ -5,11 +5,6 @@ import { UserService } from '@/modules/user/user.service';
 export class UserController {
   constructor(private readonly user_service: UserService) {}
 
-  // @Get(':id')
-  // async getUser(@Param('id') id: string) {
-  //   return this.user_service.getUserById(id);
-  // }
-
   @Get(':email')
   async getUser(@Param('email') email: string) {
     return this.user_service.findByEmail(email);

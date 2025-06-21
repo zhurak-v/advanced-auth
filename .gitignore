@@ -1,6 +1,8 @@
 server/dist
 server/node_modules
 server/build
+server/prisma/client
+server/prisma/migrations
 
 .vscode/*
 !.vscode/settings.json

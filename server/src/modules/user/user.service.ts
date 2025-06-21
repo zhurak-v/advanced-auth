@@ -1,26 +1,24 @@
-import { Injectable } from '@nestjs/common';
-import { UserRepository } from '@/modules/user/user.repository';
-import { User } from '@/modules/user/interfaces';
+import { Injectable } from "@nestjs/common";
+import { UserRepository } from "@/modules/user/user.repository";
+import { UserCreateInput } from "@/modules/user/interfaces";
 
 @Injectable()
 export class UserService {
   constructor(private readonly user_repository: UserRepository) {}
 
   public async findByEmail(email: string) {
-        const user = this.user_repository.findByEmail(email);
-        return user;
-    }
+    return this.user_repository.findByEmail(email);
+  }
 
-  async createUser(data: User) {
+  async createUser(data: UserCreateInput) {
     return this.user_repository.create({ data });
   }
 
-  async getUserById(id: string){
-    return this.user_repository.findById({ id });
+  async getUserById(id: string) {
+    return this.user_repository.findByUniqueKeys({ id });
   }
 
   async getAllUsers() {
     return this.user_repository.findAll();
   }
-
 }
