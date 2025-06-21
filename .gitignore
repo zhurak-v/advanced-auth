@@ -1,0 +1,12 @@
+server/dist
+server/node_modules
+server/build
+
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+configs/*.env
+!configs/.example.env

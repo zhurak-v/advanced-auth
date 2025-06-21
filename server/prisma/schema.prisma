@@ -1,0 +1,69 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
+  output        = "./client"
+  ssl           = false
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("POSTGRES_URL")
+}
+
+model User {
+  id      String   @id @default(uuid())
+  profile Profile? @relation("user_to_profile")
+  accounts Account[] @relation("user_to_accounts")
+
+  full_name String
+  email    String @unique
+  password String
+
+  is_verified           Boolean @default(false)
+  is_two_factor_enabled Boolean @default(false)
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@map("users")
+}
+
+model Profile {
+  id      String @id @default(uuid())
+  user_id String @unique
+  user    User   @relation("user_to_profile", fields: [user_id], references: [id])
+
+  nickname String? @unique
+  phone    String? @unique
+
+  birth_date DateTime?
+  bio        String?
+  avatar     String?
+  sex        Sex?
+
+  @@map("profiles")
+}
+
+model Account {
+  id                  String          @id @default(uuid())
+  user_id             String
+  user                User            @relation("user_to_accounts", fields: [user_id], references: [id])
+  provider            AccountProvider
+  provider_account_id String          @unique
+  refresh_token       String?
+
+  @@unique([user_id, provider])
+  @@map("accounts")
+}
+
+enum Sex {
+  MALE
+  FEMALE
+}
+
+enum AccountProvider {
+  GOOGLE
+  FACEBOOK
+  APPLE
+  CREDENTIAL
+}
